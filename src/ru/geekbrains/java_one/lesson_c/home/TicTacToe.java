@@ -203,8 +203,8 @@ public class TicTacToe {
                 humanTurn();
                 printField();
                 if (gameChecks(DOT_HUMAN, "Human win")) break;
-             //   aiTurn();
-              //  printField();
+                aiTurn();
+                printField();
                 if (gameChecks(DOT_AI, "Computer win")) break;
             }
             System.out.println("To play again enter 'y'");

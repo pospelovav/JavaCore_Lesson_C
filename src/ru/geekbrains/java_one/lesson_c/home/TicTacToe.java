@@ -78,61 +78,56 @@ public class TicTacToe {
 
     // checkWin
     private static boolean checkWin(char c) {
+        char[][] checkDiag = new char[2][fieldSizeX];   //массив для диагоналей
 
-        boolean[][] condArr = new boolean[3][fieldSizeX];
-        int i2 = 0, j2 = 0;
-        for (int l = 0; l < 3; l++) {
-            switch (l){
-                case 0:
-                    for (int i = 0; i < fieldSizeX; i++) {condArr[l][i] = field[i][0] == c;}
-                    break;
-                case 1:
-                    for (int i = 0; i < fieldSizeX; i++) {condArr[l][i] = field[0][i] == c;}
-                    break;
-                case 2:
-                    condArr[l][0] = field[0][0] == c;
-                    condArr[l][1] = field[0][fieldSizeX - 1] == c;
-                    break;
-            }
-
-        }
-        for (int k = 0; k < 3; k++) {
-            switch (k){
-                case 0:
-                    for (int i = 0; i < fieldSizeX; i++) {
-                        for (int j = 1; j < fieldSizeX; j++) {
-                            condArr[k][i] = condArr[k][i] && field[i][j] == c;
+        for (int k = 0; k < 2; k++) {
+            for (int l = 0; l < fieldSizeY; l++) {
+                for (int i = 0, fixCheck = 0; i < fieldSizeX; i++) {
+                    if (k == 0){            //горизонтали
+                        if (field[l][i] == c){
+                            fixCheck ++;
+                        }
+                        if ((i == fieldSizeX-1) || (field[l][i] != c)) {
+                            if (fixCheck < fieldSizeX-1) {  //количество элементов подряд (размерность - 1)
+                                fixCheck = 0;
+                            } else {return true;}
                         }
                     }
-                    break;
-                case 1:
-                    for (int i = 0; i < fieldSizeX; i++) {
-                        for (int j = 1; j < fieldSizeX; j++) {
-                            condArr[k][i] = condArr[k][i] && field[j][i] == c;
+                    if (k == 1){        //вертикали
+                        if (field[i][l] == c){
+                            fixCheck ++;
+                        }
+                        if ((i == fieldSizeX-1) || (field[i][l] != c)) {
+                            if (fixCheck < fieldSizeX-1) {  //количество элементов подряд (размерность - 1)
+                                fixCheck = 0;
+                            } else {return true;}
                         }
                     }
-                    break;
-                case 2:
-                    for (int j = 1; j < fieldSizeX; j++) {
-                        condArr[k][0] = condArr[k][0] && field[j][j] == c;
-                        condArr[k][1] = condArr[k][1] && field[j][fieldSizeX - j -1] == c;
+
+                }
+            }
+
+            for (int i = 0; i < fieldSizeX; i++) {                       //диагонали
+                checkDiag[0][i] = field[i][i];
+                checkDiag[1][i] = field[i][fieldSizeX - i - 1];
+            }
+            for (int g = 0; g < 2; g++) {
+                for (int j = 0, fixCheck = 0; j < fieldSizeX; j++) {
+                    if (checkDiag[g][j] == c){
+                        fixCheck ++;
                     }
-                    break;
+                    if ((j == fieldSizeX-1) || (checkDiag[g][j] != c)) {
+                        if (fixCheck < fieldSizeX-1) {  //количество элементов подряд (размерность - 1)
+                            fixCheck = 0;
+                        } else {return true;}
+                    }
+                }
             }
+
+
         }
 
-        for (int k = 0; k < 3; k++) {
-            for (int i = 0; i < 3; i++){
-                if (condArr[k][i]) return true;
-            }
-        }
 
-        /*
-        condArr[0][i] - true/false i-ой строки field
-        condArr[1][j] - true/false j-ого столбца field
-        condArr[2][0] - true/false главной диагонали field
-        condArr[2][1] - true/false второй диагонали field
-         */
         return false;
     }
 
